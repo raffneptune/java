@@ -47,7 +47,7 @@
 
 <h1>Kumpulan Kode Java</h1>
 
-<h2>1. </h2>
+<h2>1. Absensi</h2>
 <pre><code class="code-block">
 import java.util.Scanner;
 
@@ -98,49 +98,965 @@ public class Absensi {
 }
 </code></pre>
 
-<h2>2. </h2>
+<h2>2. Barbershop</h2>
 <pre><code class="code-block">
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
 
+public class Barbershop {
+    private Queue<String> antrian;  // Antrian pelanggan
+    private boolean buka;  // Status barbershop
+
+    // Konstruktor untuk menginisialisasi Barbershop
+    public Barbershop() {
+        antrian = new LinkedList<>();
+        buka = true;
+    }
+
+    // Fungsi untuk membuka Barbershop
+    public void bukaBarbershop() {
+        System.out.println("Barbershop sedang buka, silakan masuk!");
+    }
+
+    // Fungsi untuk menutup Barbershop
+    public void tutupBarbershop() {
+        buka = false;
+        System.out.println("Barbershop sudah tutup. Terima kasih sudah datang!");
+    }
+
+    // Fungsi untuk menambah pelanggan ke dalam antrian
+    public void tambahPelanggan(String nama) {
+        if (buka) {
+            antrian.add(nama);
+            System.out.println(nama + " telah masuk ke antrian.");
+        } else {
+            System.out.println("Barbershop sudah tutup. Anda tidak bisa mendaftar.");
+        }
+    }
+
+    // Fungsi untuk memproses pelanggan
+    public void prosesPelanggan() {
+        if (!antrian.isEmpty()) {
+            String pelanggan = antrian.poll();  // Mengambil pelanggan pertama dalam antrian
+            System.out.println("Sedang melayani " + pelanggan + "...");
+            try {
+                Thread.sleep(2000);  // Simulasi pemotongan rambut selama 2 detik
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println(pelanggan + " telah selesai dilayani.");
+        } else {
+            System.out.println("Tidak ada pelanggan di antrian.");
+        }
+    }
+
+    // Fungsi untuk menampilkan antrian
+    public void tampilkanAntrian() {
+        if (!antrian.isEmpty()) {
+            System.out.println("Antrian pelanggan:");
+            int no = 1;
+            for (String pelanggan : antrian) {
+                System.out.println(no++ + ". " + pelanggan);
+            }
+        } else {
+            System.out.println("Tidak ada pelanggan di antrian.");
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Barbershop barbershop = new Barbershop();
+        barbershop.bukaBarbershop();
+
+        while (true) {
+            System.out.println("\n--- Menu ---");
+            System.out.println("1. Tambah Pelanggan");
+            System.out.println("2. Proses Pelanggan");
+            System.out.println("3. Lihat Antrian");
+            System.out.println("4. Tutup Barbershop");
+            System.out.println("5. Keluar");
+
+            System.out.print("Pilih menu (1-5): ");
+            int pilihan = scanner.nextInt();
+            scanner.nextLine();  // Membersihkan newline setelah nextInt()
+
+            switch (pilihan) {
+                case 1:
+                    System.out.print("Masukkan nama pelanggan: ");
+                    String nama = scanner.nextLine();
+                    barbershop.tambahPelanggan(nama);
+                    break;
+                case 2:
+                    barbershop.prosesPelanggan();
+                    break;
+                case 3:
+                    barbershop.tampilkanAntrian();
+                    break;
+                case 4:
+                    barbershop.tutupBarbershop();
+                    return;
+                case 5:
+                    System.out.println("Terima kasih telah menggunakan program ini!");
+                    return;
+                default:
+                    System.out.println("Pilihan tidak valid, coba lagi.");
+            }
+        }
+    }
+}
 </code></pre>
 
-<h2>3. </h2>
+<h2>3. Bioskop</h2>
 <pre><code class="code-block">
+import java.util.Scanner;
 
+public class Bioskop {
+
+    // Menampilkan daftar film yang tersedia
+    public static void showFilms() {
+        System.out.println("Daftar Film yang Tersedia:");
+        System.out.println("1. Film A - Harga: Rp 50000");
+        System.out.println("2. Film B - Harga: Rp 60000");
+        System.out.println("3. Film C - Harga: Rp 70000");
+        System.out.println("4. Film D - Harga: Rp 55000");
+    }
+
+    // Memilih film yang diinginkan oleh pengguna
+    public static int pilihFilm(Scanner scanner) {
+        int pilihan;
+        while (true) {
+            System.out.print("\nPilih film (1-4): ");
+            if (scanner.hasNextInt()) {
+                pilihan = scanner.nextInt();
+                if (pilihan >= 1 && pilihan <= 4) {
+                    return pilihan;
+                } else {
+                    System.out.println("Pilihan tidak valid, coba lagi.");
+                }
+            } else {
+                System.out.println("Masukkan angka yang valid.");
+                scanner.next(); // Clear invalid input
+            }
+        }
+    }
+
+    // Mendapatkan nama film berdasarkan pilihan
+    public static String getFilmName(int pilihan) {
+        switch (pilihan) {
+            case 1: return "Film A";
+            case 2: return "Film B";
+            case 3: return "Film C";
+            case 4: return "Film D";
+            default: return "Film Tidak Diketahui";
+        }
+    }
+
+    // Proses membeli tiket
+    public static void beliTiket(Scanner scanner) {
+        int pilihan, jumlahTiket, totalHarga;
+
+        while (true) {
+            showFilms();
+            pilihan = pilihFilm(scanner);
+
+            // Menghitung harga berdasarkan film yang dipilih
+            switch (pilihan) {
+                case 1: totalHarga = 50000; break;
+                case 2: totalHarga = 60000; break;
+                case 3: totalHarga = 70000; break;
+                case 4: totalHarga = 55000; break;
+                default: totalHarga = 0; break;
+            }
+
+            // Input jumlah tiket
+            System.out.print("Masukkan jumlah tiket yang ingin dibeli: ");
+            while (!scanner.hasNextInt()) {
+                System.out.print("Jumlah tiket tidak valid, coba lagi: ");
+                scanner.next(); // Clear invalid input
+            }
+            jumlahTiket = scanner.nextInt();
+
+            totalHarga *= jumlahTiket; // Menghitung total harga
+
+            // Menampilkan hasil pembelian
+            System.out.printf("\nTiket untuk film %s (%d tiket) berhasil dipesan.\n", getFilmName(pilihan), jumlahTiket);
+            System.out.printf("Total harga: Rp %d\n", totalHarga);
+
+            // Tanya apakah ingin membeli tiket lagi
+            System.out.print("\nApakah Anda ingin membeli tiket lagi? (y/t): ");
+            char lagi = scanner.next().charAt(0);
+
+            if (Character.toLowerCase(lagi) == 't') {
+                System.out.println("Terima kasih telah membeli tiket di bioskop kami!");
+                break;
+            }
+        }
+    }
+
+    // Program utama
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        beliTiket(scanner);
+        scanner.close();
+    }
+}
 </code></pre>
 
-<h2>4. </h2>
+<h2>4. Dealer Kartu (Black Jack Simplified)</h2>
 <pre><code class="code-block">
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
 
+public class Blackjack {
+
+    // Daftar kartu dalam deck
+    private static final String[] deck = {
+        "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A", // Set pertama
+        "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A", // Set kedua
+        "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A", // Set ketiga
+        "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"  // Set keempat
+    };
+
+    // Fungsi untuk menghitung nilai kartu
+    public static int cardValue(String card) {
+        switch (card) {
+            case "J":
+            case "Q":
+            case "K":
+                return 10;
+            case "A":
+                return 11; // Menganggap Ace = 11 untuk kesederhanaan
+            default:
+                return Integer.parseInt(card); // Kartu angka (2-10)
+        }
+    }
+
+    // Fungsi untuk membagikan kartu secara acak
+    public static String dealCard(ArrayList<String> deck) {
+        Collections.shuffle(deck);
+        return deck.remove(0); // Keluarkan kartu pertama dari deck
+    }
+
+    // Fungsi untuk menghitung total nilai kartu dalam hand
+    public static int calculateHand(ArrayList<String> hand) {
+        int total = 0;
+        for (String card : hand) {
+            total += cardValue(card);
+        }
+        return total;
+    }
+
+    // Fungsi utama untuk menjalankan permainan
+    public static void startGame() {
+        Scanner scanner = new Scanner(System.in);
+        ArrayList<String> deckCopy = new ArrayList<>();
+        Collections.addAll(deckCopy, deck); // Salinan deck untuk permainan
+
+        // Kartu untuk pemain dan dealer
+        ArrayList<String> playerHand = new ArrayList<>();
+        ArrayList<String> dealerHand = new ArrayList<>();
+
+        // Membagikan dua kartu untuk pemain dan dealer
+        playerHand.add(dealCard(deckCopy));
+        playerHand.add(dealCard(deckCopy));
+        dealerHand.add(dealCard(deckCopy));
+        dealerHand.add(dealCard(deckCopy));
+
+        // Menampilkan kartu awal pemain dan dealer (satu kartu dealer tersembunyi)
+        System.out.println("Kartu Anda: " + playerHand + " dengan nilai " + calculateHand(playerHand));
+        System.out.println("Kartu Dealer: " + dealerHand.get(0) + " dan kartu tersembunyi");
+
+        // Giliran pemain
+        while (calculateHand(playerHand) < 21) {
+            System.out.print("Apakah Anda ingin 'Hit' atau 'Stand'? ");
+            String action = scanner.nextLine().toLowerCase();
+
+            if (action.equals("hit")) {
+                playerHand.add(dealCard(deckCopy));
+                System.out.println("Kartu Anda sekarang: " + playerHand + " dengan nilai " + calculateHand(playerHand));
+            } else if (action.equals("stand")) {
+                break;
+            } else {
+                System.out.println("Pilihan tidak valid. Pilih 'Hit' atau 'Stand'.");
+            }
+        }
+
+        // Jika pemain melebihi 21
+        if (calculateHand(playerHand) > 21) {
+            System.out.println("Nilai kartu Anda melebihi 21! Anda kalah!");
+            return;
+        }
+
+        // Giliran dealer (dealer akan 'hit' sampai total kartu >= 17)
+        System.out.println("Kartu Dealer sekarang: " + dealerHand + " dengan nilai " + calculateHand(dealerHand));
+        while (calculateHand(dealerHand) < 17) {
+            System.out.println("Dealer memukul kartu...");
+            dealerHand.add(dealCard(deckCopy));
+            System.out.println("Kartu Dealer sekarang: " + dealerHand + " dengan nilai " + calculateHand(dealerHand));
+        }
+
+        // Menentukan pemenang
+        int playerTotal = calculateHand(playerHand);
+        int dealerTotal = calculateHand(dealerHand);
+
+        if (dealerTotal > 21) {
+            System.out.println("Dealer melebihi 21! Anda menang!");
+        } else if (playerTotal > dealerTotal) {
+            System.out.println("Anda menang!");
+        } else if (playerTotal < dealerTotal) {
+            System.out.println("Dealer menang!");
+        } else {
+            System.out.println("Hasil seri!");
+        }
+
+        scanner.close();
+    }
+
+    // Fungsi utama untuk menjalankan permainan
+    public static void main(String[] args) {
+        System.out.println("Selamat datang di permainan Dealer Kartu!");
+        startGame();
+    }
+}
 </code></pre>
 
-<h2>5. </h2>
+<h2>5. Diler Kendaraan</h2>
 <pre><code class="code-block">
+import java.util.Scanner;
 
+class Vehicle {
+    private String model;
+    private int price;
+    private int stock;
+
+    public Vehicle(String model, int price, int stock) {
+        this.model = model;
+        this.price = price;
+        this.stock = stock;
+    }
+
+    // Menampilkan informasi kendaraan
+    public void displayInfo() {
+        System.out.println("Model: " + model + ", Harga: Rp" + price + ", Stok: " + stock);
+    }
+
+    // Mengupdate stok setelah pembelian
+    public void updateStock(int quantity) {
+        stock -= quantity;
+        if (stock < 0) {
+            stock = 0;
+        }
+    }
+
+    // Memeriksa ketersediaan stok
+    public boolean isAvailable(int quantity) {
+        return stock >= quantity;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+}
+
+class VehicleDealer {
+    private Vehicle[] vehicles;
+    private int vehicleCount;
+
+    public VehicleDealer(int maxVehicles) {
+        vehicles = new Vehicle[maxVehicles];
+        vehicleCount = 0;
+    }
+
+    // Menambahkan kendaraan ke diler
+    public void addVehicle(String model, int price, int stock) {
+        if (vehicleCount < vehicles.length) {
+            vehicles[vehicleCount] = new Vehicle(model, price, stock);
+            vehicleCount++;
+        } else {
+            System.out.println("Diler sudah penuh, tidak bisa menambah kendaraan.");
+        }
+    }
+
+    // Menampilkan semua kendaraan yang tersedia
+    public void displayVehicles() {
+        if (vehicleCount == 0) {
+            System.out.println("Tidak ada kendaraan di diler.");
+            return;
+        }
+
+        System.out.println("\nKendaraan yang Tersedia di Diler:");
+        for (int i = 0; i < vehicleCount; i++) {
+            System.out.print((i + 1) + ". ");
+            vehicles[i].displayInfo();
+        }
+    }
+
+    // Pembelian kendaraan
+    public void purchaseVehicle() {
+        displayVehicles();
+
+        if (vehicleCount == 0) {
+            return;
+        }
+
+        Scanner scanner = new Scanner(System.in);
+        try {
+            System.out.print("\nPilih kendaraan (masukkan nomor): ");
+            int choice = scanner.nextInt();
+            System.out.print("Berapa banyak yang ingin dibeli? ");
+            int quantity = scanner.nextInt();
+
+            if (choice < 1 || choice > vehicleCount) {
+                System.out.println("Pilihan tidak valid.");
+                return;
+            }
+
+            Vehicle selectedVehicle = vehicles[choice - 1];
+            if (selectedVehicle.isAvailable(quantity)) {
+                int totalPrice = selectedVehicle.getPrice() * quantity;
+                System.out.println("\nPembelian Sukses! Total Harga: Rp" + totalPrice);
+                selectedVehicle.updateStock(quantity);
+            } else {
+                System.out.println("\nStok tidak cukup.");
+            }
+        } catch (Exception e) {
+            System.out.println("Input tidak valid.");
+        }
+    }
+}
+
+public class VehicleDealerApp {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        VehicleDealer dealer = new VehicleDealer(10); // Maksimal 10 kendaraan
+
+        // Menambahkan beberapa kendaraan ke diler
+        dealer.addVehicle("Mobil Sedan", 300000000, 10);
+        dealer.addVehicle("Motor Sport", 100000000, 5);
+        dealer.addVehicle("Mobil SUV", 500000000, 3);
+
+        while (true) {
+            System.out.println("\n--- Menu Diler Kendaraan ---");
+            System.out.println("1. Lihat kendaraan yang tersedia");
+            System.out.println("2. Pembelian kendaraan");
+            System.out.println("3. Keluar");
+
+            System.out.print("\nPilih menu: ");
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    dealer.displayVehicles();
+                    break;
+                case 2:
+                    dealer.purchaseVehicle();
+                    break;
+                case 3:
+                    System.out.println("Terima kasih telah mengunjungi diler kami!");
+                    return;
+                default:
+                    System.out.println("Pilihan tidak valid.");
+            }
+        }
+    }
+}
 </code></pre>
 
-<h2>6. </h2>
+<h2>6. Gaji</h2>
 <pre><code class="code-block">
+import java.util.Scanner;
 
+public class GajiKaryawan {
+
+    // Fungsi untuk menghitung gaji total
+    public static double hitungGaji(double gajiPokok, double tunjangan, double potongan) {
+        return gajiPokok + tunjangan - potongan;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        // Menampilkan judul program
+        System.out.println("Program Perhitungan Gaji Karyawan");
+        
+        // Input data
+        System.out.print("Masukkan gaji pokok: Rp ");
+        double gajiPokok = scanner.nextDouble();
+        
+        System.out.print("Masukkan tunjangan: Rp ");
+        double tunjangan = scanner.nextDouble();
+        
+        System.out.print("Masukkan potongan: Rp ");
+        double potongan = scanner.nextDouble();
+        
+        // Menghitung gaji total
+        double gajiTotal = hitungGaji(gajiPokok, tunjangan, potongan);
+        
+        // Menampilkan hasil perhitungan
+        System.out.println("\nRingkasan Gaji:");
+        System.out.println("Gaji Pokok: Rp " + gajiPokok);
+        System.out.println("Tunjangan: Rp " + tunjangan);
+        System.out.println("Potongan: Rp " + potongan);
+        System.out.println("Gaji Total: Rp " + gajiTotal);
+        
+        scanner.close();
+    }
+}
 </code></pre>
 
-<h2>7. </h2>
+<h2>7. Kafe</h2>
 <pre><code class="code-block">
+import java.util.Scanner;
 
+class Cafe {
+
+    // Daftar menu dan harga
+    private String[] menu = {"Kopi", "Teh", "Espresso", "Cappuccino", "Kue"};
+    private int[] harga = {15000, 10000, 20000, 25000, 12000};
+    private String[] pesanan = new String[10];
+    private int[] jumlahPesanan = new int[10];
+    private int pesananCount = 0;
+
+    // Menampilkan menu
+    public void tampilkanMenu() {
+        System.out.println("\n--- Menu Kafe ---");
+        for (int i = 0; i < menu.length; i++) {
+            System.out.println((i + 1) + ". " + menu[i] + ": Rp " + harga[i]);
+        }
+    }
+
+    // Menambahkan pesanan
+    public void tambahPesanan() {
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            tampilkanMenu();
+            System.out.print("\nMasukkan nomor item yang ingin dipesan (ketik 0 untuk selesai): ");
+            int pilihan = scanner.nextInt();
+
+            if (pilihan == 0) {
+                break;
+            }
+
+            if (pilihan >= 1 && pilihan <= menu.length) {
+                System.out.print("Berapa banyak " + menu[pilihan - 1] + " yang ingin dipesan? ");
+                int jumlah = scanner.nextInt();
+
+                // Tambahkan pesanan ke dalam daftar pesanan
+                if (pesananCount < pesanan.length) {
+                    boolean ditemukan = false;
+                    for (int i = 0; i < pesananCount; i++) {
+                        if (pesanan[i].equals(menu[pilihan - 1])) {
+                            jumlahPesanan[i] += jumlah;
+                            ditemukan = true;
+                            break;
+                        }
+                    }
+
+                    if (!ditemukan) {
+                        pesanan[pesananCount] = menu[pilihan - 1];
+                        jumlahPesanan[pesananCount] = jumlah;
+                        pesananCount++;
+                    }
+
+                    System.out.println(jumlah + " " + menu[pilihan - 1] + " telah ditambahkan ke pesanan.");
+                } else {
+                    System.out.println("Tidak dapat menambahkan pesanan. Maksimal pesanan tercapai.");
+                }
+            } else {
+                System.out.println("Pilihan tidak valid. Silakan coba lagi.");
+            }
+        }
+    }
+
+    // Menghitung total harga pesanan
+    public int hitungTotal() {
+        int total = 0;
+        for (int i = 0; i < pesananCount; i++) {
+            for (int j = 0; j < menu.length; j++) {
+                if (pesanan[i].equals(menu[j])) {
+                    total += harga[j] * jumlahPesanan[i];
+                }
+            }
+        }
+        return total;
+    }
+
+    // Menampilkan pesanan dan total harga
+    public void tampilkanPesanan() {
+        if (pesananCount == 0) {
+            System.out.println("\nTidak ada pesanan.");
+        } else {
+            System.out.println("\n--- Pesanan Anda ---");
+            for (int i = 0; i < pesananCount; i++) {
+                for (int j = 0; j < menu.length; j++) {
+                    if (pesanan[i].equals(menu[j])) {
+                        System.out.println(pesanan[i] + " x " + jumlahPesanan[i] + " = Rp " + harga[j] * jumlahPesanan[i]);
+                    }
+                }
+            }
+            System.out.println("\nTotal yang harus dibayar: Rp " + hitungTotal());
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Cafe cafe = new Cafe();
+        int pilihan;
+
+        while (true) {
+            System.out.println("\n--- Selamat Datang di Kafe! ---");
+            System.out.println("1. Lihat Menu");
+            System.out.println("2. Tambah Pesanan");
+            System.out.println("3. Lihat Pesanan dan Total");
+            System.out.println("4. Keluar");
+
+            System.out.print("Pilih menu (1-4): ");
+            pilihan = scanner.nextInt();
+
+            switch (pilihan) {
+                case 1:
+                    cafe.tampilkanMenu();
+                    break;
+                case 2:
+                    cafe.tambahPesanan();
+                    break;
+                case 3:
+                    cafe.tampilkanPesanan();
+                    break;
+                case 4:
+                    System.out.println("Terima kasih telah mengunjungi kafe kami. Sampai jumpa!");
+                    return;
+                default:
+                    System.out.println("Pilihan tidak valid. Silakan coba lagi.");
+                    break;
+            }
+        }
+    }
+}
 </code></pre>
 
-<h2>8. </h2>
+<h2>8. Kalkulator</h2>
 <pre><code class="code-block">
+import java.util.Scanner;
 
+public class Kalkulator {
+
+    // Fungsi untuk penjumlahan
+    public static double tambah(double x, double y) {
+        return x + y;
+    }
+
+    // Fungsi untuk pengurangan
+    public static double kurang(double x, double y) {
+        return x - y;
+    }
+
+    // Fungsi untuk perkalian
+    public static double kali(double x, double y) {
+        return x * y;
+    }
+
+    // Fungsi untuk pembagian
+    public static double bagi(double x, double y) {
+        if (y != 0) {
+            return x / y;
+        } else {
+            System.out.println("Tidak bisa membagi dengan nol");
+            return Double.NaN; // Mengembalikan nilai NaN (Not a Number) jika pembagian dengan nol
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        // Menampilkan menu operasi
+        System.out.println("Pilih operasi:");
+        System.out.println("1. Tambah");
+        System.out.println("2. Kurang");
+        System.out.println("3. Kali");
+        System.out.println("4. Bagi");
+
+        // Meminta input pilihan operasi
+        System.out.print("Masukkan pilihan (1/2/3/4): ");
+        int pilihan = scanner.nextInt();
+        
+        // Meminta input angka
+        System.out.print("Masukkan angka pertama: ");
+        double num1 = scanner.nextDouble();
+        
+        System.out.print("Masukkan angka kedua: ");
+        double num2 = scanner.nextDouble();
+
+        // Melakukan operasi sesuai dengan pilihan pengguna
+        switch (pilihan) {
+            case 1:
+                System.out.println(num1 + " + " + num2 + " = " + tambah(num1, num2));
+                break;
+            case 2:
+                System.out.println(num1 + " - " + num2 + " = " + kurang(num1, num2));
+                break;
+            case 3:
+                System.out.println(num1 + " * " + num2 + " = " + kali(num1, num2));
+                break;
+            case 4:
+                double hasilBagi = bagi(num1, num2);
+                if (!Double.isNaN(hasilBagi)) {
+                    System.out.println(num1 + " / " + num2 + " = " + hasilBagi);
+                }
+                break;
+            default:
+                System.out.println("Pilihan tidak valid!");
+                break;
+        }
+        
+        scanner.close();
+    }
+}
 </code></pre>
 
-<h2>9. </h2>
+<h2>9. Kasir</h2>
 <pre><code class="code-block">
+import java.util.ArrayList;
+import java.util.Scanner;
 
+class Barang {
+    String nama;
+    double harga;
+    int jumlah;
+    double total;
+
+    // Constructor untuk membuat objek Barang
+    public Barang(String nama, double harga, int jumlah) {
+        this.nama = nama;
+        this.harga = harga;
+        this.jumlah = jumlah;
+        this.total = harga * jumlah;
+    }
+
+    // Menampilkan rincian barang
+    public void tampilkanRincian() {
+        System.out.println(nama + " - Harga: " + harga + " - Jumlah: " + jumlah + " - Total: " + total);
+    }
+}
+
+class Kasir {
+    ArrayList<Barang> daftarBarang;
+    double totalHarga;
+
+    // Constructor untuk inisialisasi
+    public Kasir() {
+        daftarBarang = new ArrayList<>();
+        totalHarga = 0;
+    }
+
+    // Menambah barang ke daftar belanja
+    public void tambahBarang(String nama, double harga, int jumlah) {
+        Barang barang = new Barang(nama, harga, jumlah);
+        daftarBarang.add(barang);
+        totalHarga += barang.total;
+        System.out.println(nama + " x" + jumlah + " ditambahkan ke daftar belanja.");
+    }
+
+    // Menampilkan rincian belanja
+    public void tampilkanRincian() {
+        System.out.println("\n--- Rincian Belanja ---");
+        for (Barang barang : daftarBarang) {
+            barang.tampilkanRincian();
+        }
+        System.out.println("\nTotal Belanja: " + totalHarga);
+    }
+
+    // Proses pembayaran dan menghitung kembalian
+    public void bayar(double uangDibayar) {
+        if (uangDibayar >= totalHarga) {
+            double kembalian = uangDibayar - totalHarga;
+            System.out.println("\nTotal yang harus dibayar: " + totalHarga);
+            System.out.println("Uang yang dibayar: " + uangDibayar);
+            System.out.println("Kembalian: " + kembalian);
+        } else {
+            System.out.println("\nUang yang dibayar kurang dari total belanja. Transaksi dibatalkan.");
+        }
+    }
+}
+
+public class ProgramKasir {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Kasir kasir = new Kasir();
+
+        while (true) {
+            System.out.println("\nMenu Kasir");
+            System.out.println("1. Tambah barang");
+            System.out.println("2. Tampilkan rincian belanja");
+            System.out.println("3. Bayar");
+            System.out.println("4. Keluar");
+            System.out.print("Pilih menu (1/2/3/4): ");
+            int pilihan = scanner.nextInt();
+            scanner.nextLine(); // Clear buffer
+
+            if (pilihan == 1) {
+                System.out.print("Masukkan nama barang: ");
+                String namaBarang = scanner.nextLine();
+                System.out.print("Masukkan harga barang: ");
+                double harga = scanner.nextDouble();
+                System.out.print("Masukkan jumlah barang: ");
+                int jumlah = scanner.nextInt();
+                kasir.tambahBarang(namaBarang, harga, jumlah);
+            } else if (pilihan == 2) {
+                kasir.tampilkanRincian();
+            } else if (pilihan == 3) {
+                kasir.tampilkanRincian();
+                System.out.print("Masukkan uang yang dibayar: ");
+                double uangDibayar = scanner.nextDouble();
+                kasir.bayar(uangDibayar);
+            } else if (pilihan == 4) {
+                System.out.println("Terima kasih, sampai jumpa!");
+                break;
+            } else {
+                System.out.println("Pilihan tidak valid, coba lagi.");
+            }
+        }
+        scanner.close();
+    }
+}
 </code></pre>
 
-<h2>10. </h2>
+<h2>10. Kereta</h2>
 <pre><code class="code-block">
+import java.util.ArrayList;
+import java.util.Scanner;
 
+class Kereta {
+    private String namaKereta;
+    private String tujuan;
+    private String waktuBerangkat;
+    private int kapasitas;
+    private int terisi;
+
+    public Kereta(String namaKereta, String tujuan, String waktuBerangkat, int kapasitas) {
+        this.namaKereta = namaKereta;
+        this.tujuan = tujuan;
+        this.waktuBerangkat = waktuBerangkat;
+        this.kapasitas = kapasitas;
+        this.terisi = 0;
+    }
+
+    public void tampilkanInfo() {
+        System.out.println("Nama Kereta: " + namaKereta);
+        System.out.println("Tujuan: " + tujuan);
+        System.out.println("Waktu Berangkat: " + waktuBerangkat);
+        System.out.println("Kapasitas: " + kapasitas);
+        System.out.println("Terisi: " + terisi + "/" + kapasitas);
+        System.out.println();
+    }
+
+    public void pesanTiket(int jumlahTiket) {
+        if (terisi + jumlahTiket <= kapasitas) {
+            terisi += jumlahTiket;
+            System.out.println("Berhasil memesan " + jumlahTiket + " tiket untuk " + namaKereta + ".");
+        } else {
+            System.out.println("Maaf, hanya tersisa " + (kapasitas - terisi) + " tiket untuk " + namaKereta + ".");
+        }
+    }
+
+    public String getNamaKereta() {
+        return namaKereta;
+    }
+}
+
+class SistemKereta {
+    private ArrayList<Kereta> keretaList;
+
+    public SistemKereta() {
+        keretaList = new ArrayList<>();
+    }
+
+    public void tambahKereta(Kereta kereta) {
+        keretaList.add(kereta);
+    }
+
+    public void tampilkanJadwal() {
+        System.out.println("Jadwal Kereta:");
+        for (Kereta kereta : keretaList) {
+            kereta.tampilkanInfo();
+        }
+    }
+
+    public void pesanTiketKereta(String namaKereta, int jumlahTiket) {
+        boolean ditemukan = false;
+        for (Kereta kereta : keretaList) {
+            if (kereta.getNamaKereta().equalsIgnoreCase(namaKereta)) {
+                kereta.pesanTiket(jumlahTiket);
+                ditemukan = true;
+                break;
+            }
+        }
+        if (!ditemukan) {
+            System.out.println("Kereta dengan nama " + namaKereta + " tidak ditemukan.");
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        SistemKereta sistemKereta = new SistemKereta();
+
+        // Menambahkan beberapa kereta ke sistem
+        Kereta kereta1 = new Kereta("Ekspres Jakarta", "Bandung", "10:00", 100);
+        Kereta kereta2 = new Kereta("Argo Bromo", "Surabaya", "15:00", 150);
+        Kereta kereta3 = new Kereta("Kelas Ekonomi", "Yogyakarta", "12:00", 200);
+
+        sistemKereta.tambahKereta(kereta1);
+        sistemKereta.tambahKereta(kereta2);
+        sistemKereta.tambahKereta(kereta3);
+
+        int pilihan;
+        String namaKereta;
+        int jumlahTiket;
+
+        while (true) {
+            System.out.println("\nMenu:");
+            System.out.println("1. Tampilkan Jadwal Kereta");
+            System.out.println("2. Pesan Tiket Kereta");
+            System.out.println("3. Keluar");
+
+            System.out.print("Pilih menu (1/2/3): ");
+            pilihan = scanner.nextInt();
+
+            if (pilihan == 1) {
+                sistemKereta.tampilkanJadwal();
+            } else if (pilihan == 2) {
+                System.out.print("Masukkan nama kereta yang ingin dipesan: ");
+                scanner.nextLine(); // Membersihkan newline
+                namaKereta = scanner.nextLine();
+                System.out.print("Masukkan jumlah tiket yang ingin dipesan: ");
+                jumlahTiket = scanner.nextInt();
+                sistemKereta.pesanTiketKereta(namaKereta, jumlahTiket);
+            } else if (pilihan == 3) {
+                System.out.println("Terima kasih telah menggunakan sistem kereta.");
+                break;
+            } else {
+                System.out.println("Pilihan tidak valid. Silakan coba lagi.");
+            }
+        }
+
+        scanner.close();
+    }
+}
 </code></pre>
 
 <h2>Mau Lebih Banyak Kode? Lihat Di Github Saya (Kode 11 - 20)</h2>
